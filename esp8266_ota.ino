@@ -6,8 +6,8 @@
 BearSSL::CertStore certStore;
 #include <time.h>
  
-const String FirmwareVer={"1.1"}; 
-#define URL_fw_Version "/pulkitpahuja/esp8266sampleOTA/master//version.txt"
+const String FirmwareVer={"1.0"}; 
+#define URL_fw_Version "/pulkitpahuja/esp8266sampleOTA/master/version.txt"
 #define URL_fw_Bin "https://raw.githubusercontent.com/pulkitpahuja/esp8266sampleOTA/master/firmware.bin"
 const char* host = "raw.githubusercontent.com";
 const int httpsPort = 443;
@@ -88,6 +88,7 @@ void FirmwareUpdate()
   String payload = client.readStringUntil('\n');
 
   payload.trim();
+  Serial.println(payload);
   if(payload.equals(FirmwareVer) )
   {   
      Serial.println("Device already on latest firmware version"); 
