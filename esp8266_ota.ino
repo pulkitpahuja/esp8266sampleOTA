@@ -5,8 +5,11 @@
 #include <CertStoreBearSSL.h>
 BearSSL::CertStore certStore;
 #include <time.h>
- 
-const String FirmwareVer={"1.0"}; 
+#include <DNSServer.h>            //Local DNS Server used for redirecting all requests to the configuration portal
+#include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
+#include <WiFiManager.h>   
+
+const String FirmwareVer={"1.1"}; 
 #define URL_fw_Version "/pulkitpahuja/esp8266sampleOTA/master/version.txt"
 #define URL_fw_Bin "https://raw.githubusercontent.com/pulkitpahuja/esp8266sampleOTA/master/firmware.bin"
 const char* host = "raw.githubusercontent.com";
@@ -114,7 +117,7 @@ void FirmwareUpdate()
     } 
   }
  }  
-void connect_wifi();
+//void connect_wifi();
 unsigned long previousMillis_2 = 0;
 unsigned long previousMillis = 0;        // will store last time LED was updated
 const long interval = 60000;
@@ -140,8 +143,8 @@ const long mini_interval = 1000;
       digitalWrite(LED_BUILTIN, HIGH);
      else 
       digitalWrite(LED_BUILTIN, LOW);
-     if(WiFi.status() == !WL_CONNECTED) 
-          connect_wifi();
+     if(WiFi.status() == !WL_CONNECTED) {}
+          //connect_wifi();
    }
  }
 
@@ -149,10 +152,12 @@ const long mini_interval = 1000;
 void setup()
 {
   Serial.begin(115200);
+ 
   Serial.println("");
   Serial.println("Start");
-  WiFi.mode(WIFI_STA);
-  connect_wifi();  
+WiFiManager wifiManager;
+wifiManager.autoConnect("AP-NAME");
+//connect_wifi();  
   setClock();
   pinMode(LED_BUILTIN, OUTPUT);
   
